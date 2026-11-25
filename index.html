@@ -5,76 +5,127 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RF Online 455 Roadmap</title>
 <meta name="description" content="What the RF Online 455 project already has, what is in testing, and what is planned.">
+<meta name="theme-color" content="#0a0a0b">
 <style>
 :root{
-  --bg:#f6f7f9; --card:#fff; --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea;
-  --done:#1f7a4d; --done-bg:#e4f4ec; --test:#9a6200; --test-bg:#fdf1dc;
-  --plan:#3c5bb5; --plan-bg:#e6ecfb; --custom:#8a3ea8; --custom-bg:#f3e8f8;
-  --accent:#1b1f24;
-}
-@media (prefers-color-scheme: dark){
-  :root{
-    --bg:#121418; --card:#1b1e24; --ink:#e8eaed; --muted:#9aa3ae; --line:#2b3039;
-    --done:#6fd19e; --done-bg:#16301f; --test:#f2c06b; --test-bg:#33280f;
-    --plan:#93aaf0; --plan-bg:#1c2540; --custom:#d39cf0; --custom-bg:#2f1d38;
-    --accent:#e8eaed;
-  }
+  --bg:#0a0a0b; --s1:#131315; --s2:#1a1a1d; --s3:#232327; --line:#2a2a2f;
+  --ink:#efeee9; --muted:#a2a1a8; --dim:#6f6e76;
+  --gold:#e3b252; --orange:#f0862a; --gray:#85858d;
+  --gold-soft:rgba(227,178,82,.12); --orange-soft:rgba(240,134,42,.12); --gray-soft:rgba(133,133,141,.14);
+  color-scheme:dark;
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
-.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
-h1{font-size:26px;margin:0 0 4px}
-.sub{color:var(--muted);margin:0 0 20px}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.stat b{display:block;font-size:24px}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.topline{height:3px;background:linear-gradient(90deg,var(--gold),var(--orange) 60%,transparent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+
+/* header */
+header{padding:36px 0 22px;border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);font-weight:600;margin:0 0 10px}
+h1{font-size:clamp(26px,5vw,38px);line-height:1.15;margin:0 0 10px;font-weight:750;letter-spacing:-.01em}
+h1 span{background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);margin:0;max-width:680px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin-top:14px;font-size:13px;color:var(--dim)}
+.meta b{color:var(--ink);font-weight:600}
+
+/* overview */
+.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 12px}
+.stat{background:var(--s1);border:1px solid var(--line);border-top:2px solid var(--c);border-radius:10px;padding:14px 16px}
+.stat b{display:block;font-size:28px;line-height:1.1;font-weight:700;color:var(--c)}
 .stat span{color:var(--muted);font-size:13px}
-.legend{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:14px;color:var(--muted)}
-.legend p{margin:4px 0}
-.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center}
-.filters label{font-size:13px;color:var(--muted);margin-right:2px}
-.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
-input[type=search]{flex:1;min-width:200px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit}
-section{margin-top:26px}
-section h2{font-size:18px;margin:0 0 10px;display:flex;gap:8px;align-items:baseline}
-section h2 small{color:var(--muted);font-weight:400;font-size:13px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
-.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
-.item h3{font-size:15px;margin:0 0 6px}
-.item p{margin:0;color:var(--muted);font-size:14px}
-.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
-.tag{font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;letter-spacing:.02em}
-.t-done{color:var(--done);background:var(--done-bg)}
-.t-test{color:var(--test);background:var(--test-bg)}
-.t-plan{color:var(--plan);background:var(--plan-bg)}
-.t-custom{color:var(--custom);background:var(--custom-bg)}
-.empty{color:var(--muted);padding:20px 0}
-footer{margin-top:40px;color:var(--muted);font-size:13px}
+.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--s3)}
+.bar i{display:block;height:100%}
+.bar i.s-done{background:var(--gold)} .bar i.s-test{background:var(--orange)} .bar i.s-plan{background:var(--gray)}
+.legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin:14px 0 26px;font-size:13px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.dot{width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+.s-done{--c:var(--gold);--soft:var(--gold-soft)}
+.s-test{--c:var(--orange);--soft:var(--orange-soft)}
+.s-plan{--c:var(--gray);--soft:var(--gray-soft)}
+.s-custom{--c:var(--gold);--soft:var(--gold-soft)}
+
+/* toolbar */
+.toolbar{position:sticky;top:0;z-index:5;background:rgba(10,10,11,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:12px 0 10px}
+.tb-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.chips{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;border:1px solid var(--line);background:var(--s1);color:var(--muted);border-radius:8px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}
+.chip:hover{color:var(--ink);border-color:#3a3a40}
+.chip em{font-style:normal;color:var(--dim);margin-left:4px}
+.chip[aria-pressed="true"]{color:#111;background:var(--gold);border-color:var(--gold);font-weight:600}
+.chip[aria-pressed="true"] em{color:#3d2c08}
+.chip:focus-visible,input:focus-visible{outline:2px solid var(--orange);outline-offset:2px}
+.search{flex:1;min-width:180px;position:relative}
+.search input{width:100%;border:1px solid var(--line);background:var(--s1);color:var(--ink);border-radius:8px;padding:7px 10px 7px 32px;font:inherit;font-size:14px}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--dim)}
+#catFilters{margin-top:8px}
+.shown{font-size:12px;color:var(--dim);white-space:nowrap}
+
+/* sections */
+main{padding:8px 0 40px}
+section{margin-top:30px;scroll-margin-top:120px}
+.cat-head{display:grid;grid-template-columns:auto 1fr 200px;gap:14px;align-items:center;padding-bottom:12px;border-bottom:1px solid var(--line);position:relative}
+.cat-head::after{content:"";position:absolute;left:0;bottom:-1px;width:72px;height:2px;background:linear-gradient(90deg,var(--gold),var(--orange))}
+.num{font:600 13px/1 ui-monospace,Consolas,monospace;color:var(--gold);border:1px solid rgba(227,178,82,.45);border-radius:6px;padding:7px 8px;background:var(--gold-soft)}
+.cat-head h2{font-size:19px;margin:0;font-weight:650}
+.cat-head p{margin:2px 0 0;font-size:13px;color:var(--dim)}
+.grp{display:flex;align-items:center;gap:8px;margin:18px 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--c);font-weight:650}
+.grp span{color:var(--dim);letter-spacing:0}
+.grp::after{content:"";flex:1;height:1px;background:var(--line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:8px}
+.item{background:var(--s1);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:8px;padding:11px 14px;transition:border-color .15s,background .15s}
+.item:hover{background:var(--s2);border-color:#38383e;border-left-color:var(--c)}
+.item-top{display:flex;gap:8px;align-items:flex-start;justify-content:space-between}
+.item h4{margin:0 0 3px;font-size:14.5px;font-weight:600}
+.item p{margin:0;color:var(--muted);font-size:13.5px}
+.badge{flex:none;font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);border:1px solid rgba(227,178,82,.5);border-radius:5px;padding:1px 6px;margin-top:1px}
+.empty{color:var(--muted);padding:40px 0;text-align:center}
+footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--dim);font-size:13px}
+
+@media (max-width:720px){
+  .overview{grid-template-columns:repeat(2,1fr)}
+  .cat-head{grid-template-columns:auto 1fr}
+  .cat-head .bar{grid-column:1/-1}
+  .grid{grid-template-columns:1fr}
+  .toolbar{position:static}
+}
 </style>
 </head>
 <body>
+<div class="topline"></div>
 <div class="wrap">
-  <h1>RF Online 455 — Feature &amp; Fix Roadmap</h1>
-  <p class="sub">What the project already has, what is built and waiting for in-game testing, and what is planned. Last updated <b id="updated">2026-11-25</b>.</p>
+  <header>
+    <p class="eyebrow">RF Online · Taiwan 455 base</p>
+    <h1>Feature &amp; Fix <span>Roadmap</span></h1>
+    <p class="sub">Everything the project already has, what is built and waiting for its final in-game test, and what is planned next.</p>
+    <div class="meta"><span>Last updated <b id="updated">2026-11-25</b></span><span><b id="total"></b> items tracked</span></div>
+  </header>
 
-  <div class="stats" id="stats"></div>
-
+  <div class="overview" id="stats"></div>
+  <div class="bar" id="bar" role="img" aria-label="Overall progress"></div>
   <div class="legend">
-    <p><span class="tag t-done">DONE</span> Built and confirmed working in game.</p>
-    <p><span class="tag t-test">IN TESTING</span> Built; waiting for the final in-game test.</p>
-    <p><span class="tag t-plan">PLANNED</span> Researched or suggested, not built yet. Good candidates if you want to order more work.</p>
-    <p><span class="tag t-custom">CUSTOM</span> Our own addition; not part of the original Taiwan 455 client.</p>
-    <p>Base reference: the official Taiwan 455 client. Unless marked Custom, features follow its exact behaviour.</p>
+    <span><i class="dot s-done"></i><b>Done</b>&nbsp;built and confirmed in game</span>
+    <span><i class="dot s-test"></i><b>In testing</b>&nbsp;built, awaiting final test</span>
+    <span><i class="dot s-plan"></i><b>Planned</b>&nbsp;not built yet, available to order</span>
+    <span><i class="dot s-custom" style="background:none;border:1px solid var(--gold)"></i><b>Custom</b>&nbsp;our addition beyond original 455</span>
   </div>
+</div>
 
-  <div class="filters" id="statusFilters"><label>Status:</label></div>
-  <div class="filters" id="catFilters"><label>Category:</label></div>
-  <div class="filters"><input type="search" id="q" placeholder="Search features…" aria-label="Search features"></div>
+<div class="toolbar">
+  <div class="wrap">
+    <div class="tb-row">
+      <div class="chips" id="statusFilters"></div>
+      <label class="search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" id="q" placeholder="Search features…" aria-label="Search features"></label>
+      <span class="shown" id="shown"></span>
+    </div>
+    <div class="chips" id="catFilters"></div>
+  </div>
+</div>
 
-  <div id="list"></div>
-
-  <footer>This list summarises the project's work log. Status reflects the latest test result we have; features marked In testing may still change.</footer>
+<div class="wrap">
+  <main id="list"></main>
+  <footer>Unless marked Custom, every feature follows the official Taiwan 455 client's behaviour. Status reflects the latest in-game test; items In testing may still change.</footer>
 </div>
 
 <script>
@@ -246,46 +297,55 @@ const F = [
 ["tools","plan",1,"RF Online Studio","Standalone client asset/remodel tool; first viewer slice built."],
 ];
 
-const STATUS = {done:["DONE","t-done"], test:["IN TESTING","t-test"], plan:["PLANNED","t-plan"]};
+const STATUS = {done:["Done","s-done"], test:["In testing","s-test"], plan:["Planned","s-plan"]};
+const ORDER = ["done","test","plan"];
 const state = {status:"all", cat:"all", q:""};
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const count = (arr, s) => arr.filter(f => f[1] === s).length;
+const bar = arr => ORDER.map(s => { const n = count(arr, s); return n ? `<i class="${STATUS[s][1]}" style="width:${n / arr.length * 100}%" title="${STATUS[s][0]}: ${n}"></i>` : ""; }).join("");
 
-function chip(parent, label, key, val){
-  const b = document.createElement("button");
-  b.className = "chip"; b.type = "button"; b.textContent = label;
-  b.dataset.key = key; b.dataset.val = val;
-  b.setAttribute("aria-pressed", state[key] === val);
-  b.onclick = () => { state[key] = val; parent.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.val === val)); render(); };
-  parent.appendChild(b);
+document.getElementById("total").textContent = F.length;
+document.getElementById("stats").innerHTML =
+  ORDER.map(s => `<div class="stat ${STATUS[s][1]}"><b>${count(F, s)}</b><span>${STATUS[s][0]}</span></div>`).join("") +
+  `<div class="stat s-custom"><b>${F.filter(f => f[2]).length}</b><span>Custom additions</span></div>`;
+document.getElementById("bar").innerHTML = bar(F);
+
+function chips(id, key, opts){
+  const el = document.getElementById(id);
+  el.innerHTML = opts.map(([label, v]) => `<button type="button" class="chip" data-v="${v}" aria-pressed="${state[key] === v}">${label}</button>`).join("");
+  el.onclick = e => {
+    const b = e.target.closest(".chip"); if (!b) return;
+    state[key] = b.dataset.v;
+    el.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b));
+    render();
+  };
 }
-const sf = document.getElementById("statusFilters"), cf = document.getElementById("catFilters");
-[["All","all"],["Done","done"],["In testing","test"],["Planned","plan"],["Custom only","custom"]].forEach(([l,v]) => chip(sf,l,"status",v));
-chip(cf,"All","cat","all"); Object.entries(CATS).forEach(([k,v]) => chip(cf,v,"cat",k));
+chips("statusFilters", "status", [["All","all"],["Done","done"],["In testing","test"],["Planned","plan"],["Custom","custom"]]);
+chips("catFilters", "cat", [["All categories","all"], ...Object.entries(CATS).map(([k, v]) => [`${esc(v)}<em>${F.filter(f => f[0] === k).length}</em>`, k])]);
 document.getElementById("q").oninput = e => { state.q = e.target.value.toLowerCase(); render(); };
 
-const count = s => F.filter(f => f[1] === s).length;
-document.getElementById("stats").innerHTML =
-  `<div class="stat"><b>${F.length}</b><span>Total items</span></div>` +
-  `<div class="stat"><b>${count("done")}</b><span>Done</span></div>` +
-  `<div class="stat"><b>${count("test")}</b><span>In testing</span></div>` +
-  `<div class="stat"><b>${count("plan")}</b><span>Planned</span></div>` +
-  `<div class="stat"><b>${F.filter(f => f[2]).length}</b><span>Custom additions</span></div>`;
-
-const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function render(){
-  const order = {done:0,test:1,plan:2};
   const rows = F.filter(f =>
     (state.status === "all" || (state.status === "custom" ? f[2] : f[1] === state.status)) &&
     (state.cat === "all" || f[0] === state.cat) &&
     (!state.q || (f[3] + " " + f[4]).toLowerCase().includes(state.q)));
   let html = "";
-  for (const [k, name] of Object.entries(CATS)){
-    const g = rows.filter(f => f[0] === k).sort((a,b) => order[a[1]] - order[b[1]]);
-    if (!g.length) continue;
-    html += `<section><h2>${name} <small>${g.length}</small></h2><div class="grid">` +
-      g.map(f => `<div class="item"><div class="tags"><span class="tag ${STATUS[f[1]][1]}">${STATUS[f[1]][0]}</span>${f[2] ? '<span class="tag t-custom">CUSTOM</span>' : ""}</div><h3>${esc(f[3])}</h3><p>${esc(f[4])}</p></div>`).join("") +
-      `</div></section>`;
-  }
-  document.getElementById("list").innerHTML = html || '<p class="empty">No items match.</p>';
+  Object.entries(CATS).forEach(([k, name], i) => {
+    const all = F.filter(f => f[0] === k), g = rows.filter(f => f[0] === k);
+    if (!g.length) return;
+    html += `<section id="cat-${k}"><div class="cat-head"><span class="num">${String(i + 1).padStart(2, "0")}</span>` +
+      `<div><h2>${esc(name)}</h2><p>${ORDER.map(s => `${count(all, s)} ${STATUS[s][0].toLowerCase()}`).join(" · ")}</p></div>` +
+      `<div class="bar" role="img" aria-label="${esc(name)} progress">${bar(all)}</div></div>`;
+    ORDER.forEach(s => {
+      const gs = g.filter(f => f[1] === s); if (!gs.length) return;
+      html += `<h3 class="grp ${STATUS[s][1]}">${STATUS[s][0]} <span>${gs.length}</span></h3><div class="grid">` +
+        gs.map(f => `<article class="item ${STATUS[s][1]}"><div class="item-top"><h4>${esc(f[3])}</h4>${f[2] ? '<span class="badge">◆ Custom</span>' : ""}</div><p>${esc(f[4])}</p></article>`).join("") +
+        `</div>`;
+    });
+    html += `</section>`;
+  });
+  document.getElementById("list").innerHTML = html || '<p class="empty">No items match your filters.</p>';
+  document.getElementById("shown").textContent = `${rows.length} of ${F.length} shown`;
 }
 render();
 </script>
