@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RF Online 455 Roadmap</title>
-<meta name="description" content="What the RF Online 455 project already has, what is in testing, and what is planned.">
+<meta name="description" content="What the RF Online 455 project already has, and what is in testing.">
 <meta name="theme-color" content="#0a0a0b">
 <style>
 :root{
@@ -30,19 +30,18 @@ h1 span{background:linear-gradient(90deg,var(--gold),var(--orange));-webkit-back
 .meta b{color:var(--ink);font-weight:600}
 
 /* overview */
-.overview{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:22px 0 12px}
+.overview{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:22px 0 12px}
 .stat{background:var(--s1);border:1px solid var(--line);border-top:2px solid var(--c);border-radius:10px;padding:14px 16px}
 .stat b{display:block;font-size:28px;line-height:1.1;font-weight:700;color:var(--c)}
 .stat span{color:var(--muted);font-size:13px}
 .bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:var(--s3)}
 .bar i{display:block;height:100%}
-.bar i.s-done{background:var(--gold)} .bar i.s-test{background:var(--orange)} .bar i.s-plan{background:var(--gray)}
+.bar i.s-done{background:var(--gold)} .bar i.s-test{background:var(--orange)}
 .legend{display:flex;flex-wrap:wrap;gap:8px 20px;margin:14px 0 26px;font-size:13px;color:var(--muted)}
 .legend span{display:inline-flex;align-items:center;gap:7px}
 .dot{width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
 .s-done{--c:var(--gold);--soft:var(--gold-soft)}
 .s-test{--c:var(--orange);--soft:var(--orange-soft)}
-.s-plan{--c:var(--gray);--soft:var(--gray-soft)}
 .s-custom{--c:var(--gold);--soft:var(--gold-soft)}
 
 /* toolbar */
@@ -84,7 +83,6 @@ section{margin-top:30px;scroll-margin-top:120px}
 footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--dim);font-size:13px}
 
 @media (max-width:720px){
-  .overview{grid-template-columns:repeat(2,1fr)}
   .cat-head{grid-template-columns:auto 1fr}
   .cat-head .bar{grid-column:1/-1}
   .grid{grid-template-columns:1fr}
@@ -98,7 +96,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--dim);fon
   <header>
     <p class="eyebrow">RF Online · Taiwan 455 base</p>
     <h1>Feature &amp; Fix <span>Roadmap</span></h1>
-    <p class="sub">Everything the project already has, what is built and waiting for its final in-game test, and what is planned next.</p>
+    <p class="sub">Everything the project already has, and what is built and waiting for its final in-game test.</p>
     <div class="meta"><span>Last updated <b id="updated">2026-11-25</b></span><span><b id="total"></b> items tracked</span></div>
   </header>
 
@@ -107,7 +105,6 @@ footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--dim);fon
   <div class="legend">
     <span><i class="dot s-done"></i><b>Done</b>&nbsp;built and confirmed in game</span>
     <span><i class="dot s-test"></i><b>In testing</b>&nbsp;built, awaiting final test</span>
-    <span><i class="dot s-plan"></i><b>Planned</b>&nbsp;not built yet, available to order</span>
     <span><i class="dot s-custom" style="background:none;border:1px solid var(--gold)"></i><b>Custom</b>&nbsp;our addition beyond original 455</span>
   </div>
 </div>
@@ -138,7 +135,7 @@ const CATS = {
   render: "Rendering, engine & performance",
   tools: "Tools (Parser, Model Studio, bots)"
 };
-// [category, status (done|test|plan), custom?, title, description]
+// [category, status (done|test), custom?, title, description]
 const F = [
 // ---------- UI ----------
 ["ui","done",0,"Options window (Taiwan layout)","Two-page Basic / Advanced options with instant apply; sound, gamma, bloom, shadows, lighting, particles all saved."],
@@ -229,11 +226,6 @@ const F = [
 ["items","test",0,"Summon / Teleport / Insuperable potions","Movement block and party event fixes."],
 ["items","test",0,"Potion effects safety","Invalid potion effects rejected instead of silently doing nothing."],
 ["items","test",0,"Warehouse + shop sell messages","Trunk window clicks and sell error messages (max money)."],
-["items","plan",0,"Item Lock","Taiwan item lock feature; needs new server support (audited)."],
-["items","plan",0,"Item Upgrade window gaps","7 small differences vs Taiwan found in the upgrade window (audited)."],
-["items","plan",1,"Upgrade success-chance panel","Show upgrade chance in the upgrade window (audited, formula matches our server)."],
-["items","plan",1,"Alternative upgrade (Modifier) window skin","New-look upgrade window (sprites audited, waiting for approval)."],
-["items","plan",0,"Box reward contents","Fill empty multi-item boxes and placeholder box names (needs a decision on rewards)."],
 // ---------- Systems ----------
 ["systems","done",0,"Party size 12","12-member party, Taiwan party window, EXP sharing (client + server)."],
 ["systems","done",0,"Honor Guild","Honor Guild list, notices and mark (client + server)."],
@@ -255,10 +247,6 @@ const F = [
 ["systems","test",0,"Billing + notify messages","Billing countdown and notify messages."],
 ["systems","test",0,"Ore processing window","Rebuilt from the original layout with prices and notices."],
 ["systems","test",1,"Guardian (keeper) exit at battle start","Keeper leaves when the battle starts."],
-["systems","plan",0,"Contribution (CP) season","Needs verified 455 season rules before building."],
-["systems","plan",0,"Play time limit (fatigue)","Missing penalty messages; server option currently off."],
-["systems","plan",0,"Settlement mining","Unmanned mining drill audited; server rules not yet verified."],
-["systems","plan",0,"Sky ships","Flying ships in the sky (Taiwan does not show them; needs your choice)."],
 // ---------- Server ----------
 ["server","done",0,"Network hardening","Fixes for leaked buffers, bad packet sizes and zombie sockets."],
 ["server","done",0,"Hidden-target anti-hack","Stealth/invisible players cannot be targeted by hacks."],
@@ -284,8 +272,6 @@ const F = [
 ["render","test",0,"Particle / entity limits","Supports the larger 455 particle tables."],
 ["render","test",1,"Fast screenshots","No FPS hitch when taking a screenshot."],
 ["render","test",0,"Character rendering optimisation","Fewer draw calls for character skinning."],
-["render","plan",0,"DirectX 11 renderer","Phased plan ready; deferred, DirectX 9 stays default."],
-["render","plan",0,"Internal resolution with UI scaling","Render the 3D world at a different resolution; deferred."],
 // ---------- Tools ----------
 ["tools","done",0,"Parser (data compiler)","Builds client and server data tables from spreadsheets; native 455 tables."],
 ["tools","done",0,"Model Studio","3D viewer for characters, armour, weapons, textures and animations."],
@@ -294,11 +280,10 @@ const F = [
 ["tools","done",0,"Load-test bot client","Headless bots (300) to stress-test the server with PvP, walking, chat and mobs."],
 ["tools","test",0,"Parser V2 item import","Weapon / armour import with server sync."],
 ["tools","test",0,"Character / monster 455 data migration","Phase 1 done; full migration still in progress."],
-["tools","plan",1,"RF Online Studio","Standalone client asset/remodel tool; first viewer slice built."],
 ];
 
-const STATUS = {done:["Done","s-done"], test:["In testing","s-test"], plan:["Planned","s-plan"]};
-const ORDER = ["done","test","plan"];
+const STATUS = {done:["Done","s-done"], test:["In testing","s-test"]};
+const ORDER = ["done","test"];
 const state = {status:"all", cat:"all", q:""};
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const count = (arr, s) => arr.filter(f => f[1] === s).length;
@@ -320,7 +305,7 @@ function chips(id, key, opts){
     render();
   };
 }
-chips("statusFilters", "status", [["All","all"],["Done","done"],["In testing","test"],["Planned","plan"],["Custom","custom"]]);
+chips("statusFilters", "status", [["All","all"],["Done","done"],["In testing","test"],["Custom","custom"]]);
 chips("catFilters", "cat", [["All categories","all"], ...Object.entries(CATS).map(([k, v]) => [`${esc(v)}<em>${F.filter(f => f[0] === k).length}</em>`, k])]);
 document.getElementById("q").oninput = e => { state.q = e.target.value.toLowerCase(); render(); };
 
