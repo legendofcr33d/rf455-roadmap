@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RF Online 455 Roadmap</title>
+<meta name="description" content="What the RF Online 455 project already has, what is in testing, and what is planned.">
+<style>
+:root{
+  --bg:#f6f7f9; --card:#fff; --ink:#1b1f24; --muted:#5b6470; --line:#e3e6ea;
+  --done:#1f7a4d; --done-bg:#e4f4ec; --test:#9a6200; --test-bg:#fdf1dc;
+  --plan:#3c5bb5; --plan-bg:#e6ecfb; --custom:#8a3ea8; --custom-bg:#f3e8f8;
+  --accent:#1b1f24;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#121418; --card:#1b1e24; --ink:#e8eaed; --muted:#9aa3ae; --line:#2b3039;
+    --done:#6fd19e; --done-bg:#16301f; --test:#f2c06b; --test-bg:#33280f;
+    --plan:#93aaf0; --plan-bg:#1c2540; --custom:#d39cf0; --custom-bg:#2f1d38;
+    --accent:#e8eaed;
+  }
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:26px;margin:0 0 4px}
+.sub{color:var(--muted);margin:0 0 20px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:18px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.stat b{display:block;font-size:24px}
+.stat span{color:var(--muted);font-size:13px}
+.legend{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:18px;font-size:14px;color:var(--muted)}
+.legend p{margin:4px 0}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px;align-items:center}
+.filters label{font-size:13px;color:var(--muted);margin-right:2px}
+.chip{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:6px 12px;font:inherit;font-size:13px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+input[type=search]{flex:1;min-width:200px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 10px;font:inherit}
+section{margin-top:26px}
+section h2{font-size:18px;margin:0 0 10px;display:flex;gap:8px;align-items:baseline}
+section h2 small{color:var(--muted);font-weight:400;font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.item h3{font-size:15px;margin:0 0 6px}
+.item p{margin:0;color:var(--muted);font-size:14px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.tag{font-size:11px;font-weight:600;border-radius:999px;padding:2px 8px;letter-spacing:.02em}
+.t-done{color:var(--done);background:var(--done-bg)}
+.t-test{color:var(--test);background:var(--test-bg)}
+.t-plan{color:var(--plan);background:var(--plan-bg)}
+.t-custom{color:var(--custom);background:var(--custom-bg)}
+.empty{color:var(--muted);padding:20px 0}
+footer{margin-top:40px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>RF Online 455 — Feature &amp; Fix Roadmap</h1>
+  <p class="sub">What the project already has, what is built and waiting for in-game testing, and what is planned. Last updated <b id="updated">2026-11-25</b>.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="legend">
+    <p><span class="tag t-done">DONE</span> Built and confirmed working in game.</p>
+    <p><span class="tag t-test">IN TESTING</span> Built; waiting for the final in-game test.</p>
+    <p><span class="tag t-plan">PLANNED</span> Researched or suggested, not built yet. Good candidates if you want to order more work.</p>
+    <p><span class="tag t-custom">CUSTOM</span> Our own addition; not part of the original Taiwan 455 client.</p>
+    <p>Base reference: the official Taiwan 455 client. Unless marked Custom, features follow its exact behaviour.</p>
+  </div>
+
+  <div class="filters" id="statusFilters"><label>Status:</label></div>
+  <div class="filters" id="catFilters"><label>Category:</label></div>
+  <div class="filters"><input type="search" id="q" placeholder="Search features…" aria-label="Search features"></div>
+
+  <div id="list"></div>
+
+  <footer>This list summarises the project's work log. Status reflects the latest test result we have; features marked In testing may still change.</footer>
+</div>
+
+<script>
+const CATS = {
+  ui: "Client UI & windows",
+  combat: "Combat, skills & effects",
+  items: "Items, inventory & shops",
+  systems: "Game systems & boards",
+  server: "Server & database",
+  render: "Rendering, engine & performance",
+  tools: "Tools (Parser, Model Studio, bots)"
+};
+// [category, status (done|test|plan), custom?, title, description]
+const F = [
+// ---------- UI ----------
+["ui","done",0,"Options window (Taiwan layout)","Two-page Basic / Advanced options with instant apply; sound, gamma, bloom, shadows, lighting, particles all saved."],
+["ui","done",0,"Font style switch + per-nation fonts","Change font in Options without restarting; Character Info and quest tracker re-layout instantly."],
+["ui","done",1,"Color filter","Cinematic / Vivid / Warm / Cool screen filter with strength slider in Options."],
+["ui","done",1,"Anisotropic filtering + wider FOV + camera distance","Sharper character textures, field-of-view up to 8 levels, adjustable camera distance."],
+["ui","done",0,"Character Info window","Labels, ability panel, points column and mastery layout matched to Taiwan 455."],
+["ui","done",0,"HP / FP / SP gauge window","Gauge window matched to Taiwan, including the party leader crown."],
+["ui","done",0,"Exp bar + potion buff queue","Belt exp bar sizing and the potion buff queue box fixed."],
+["ui","done",0,"Cooldown countdown numbers","Countdown text on skill, force, potion, animus and macro icons."],
+["ui","done",0,"Minimap and world map","Map window (M key) with region labels and world map."],
+["ui","done",0,"Radar region name + 3D positional sound","Region name on the radar title and 3D positional sound effects."],
+["ui","done",0,"Sky / top-view camera","Ctrl+K special camera with zoom, matching Taiwan."],
+["ui","done",0,"ESC closes windows one at a time","ESC closes the last opened window per press, same order as retail."],
+["ui","done",0,"UI text colours","Window text colours (resists, Dalant/Gold, chat caret) matched to the original."],
+["ui","done",0,"Name tags over heads","Which names show (NPC, monster, player, animus, miner) and their class colours."],
+["ui","done",0,"Guild-battle team mark on name tags","Team marks on player names during guild battles."],
+["ui","done",0,"Create-character race select screen","Race profile no longer covers the race buttons."],
+["ui","done",0,"Macro window","Auto Potion / Action / Chat macros, faithful to the original."],
+["ui","done",0,"Chat system","Full chat send path, input, word wrap at spaces, GM and whisper handling."],
+["ui","done",0,"Journal / quest book","Quest book and quest panels; remaining ore deposits tab."],
+["ui","done",1,"Item tooltip \"Action\" row","Trade / Sell / Drop / Bank icons in the item tooltip instead of plain text."],
+["ui","done",0,"Item tooltip layout","Description wrap width and spacing matched to the original."],
+["ui","done",0,"Target window","Renewed target panel, level, dual HP gauges."],
+["ui","done",1,"Stat Ranking window","TOP players ranking with dropdowns, smooth category scroll and icon tooltips (window + server + database)."],
+["ui","done",1,"Kill / Death feed","Top-right live feed of every player kill, including chaos-mode kills (client + server)."],
+["ui","done",1,"Killer equipment window on death","See and compare the killer's equipment from the death screen, ranking-style window with tooltips."],
+["ui","done",0,"Death screen + gray death render","Revive windows and the gray death effect."],
+["ui","done",0,"Premium Service banner + Premium Benefits tooltip","Premium badge on loading/in game, benefits tooltip with Taiwan-style bars."],
+["ui","done",0,"Area boss notice","Notice when an area boss appears on your map."],
+["ui","done",0,"Window drag fix after Alt-Tab","Windows no longer stay stuck to the mouse after minimise / Alt-Tab."],
+["ui","done",0,"Window layering","Correct always-on-top / bottom layer for hotkey board and target windows."],
+["ui","done",0,"2nd password (UI Lock)","All four states: login, create, forgot, in-game."],
+["ui","test",0,"PvP view panel","Kill / death / point panel under the gauge with gold flash."],
+["ui","test",0,"Radar window zoom / collapse","Radar zoom and collapse controls."],
+["ui","test",0,"Message box sizing","Scrollable result boxes (e.g. NPC sell result) sized like Taiwan."],
+["ui","test",0,"Collection Inventory window","Horizontal tabs, list and summary; talic icons in slot and reward tooltips."],
+// ---------- Combat ----------
+["combat","done",0,"Skill / Force usable rules","Correct active/greyed icons in the Skill / Force window."],
+["combat","done",0,"Skill / Force use chain","Using skills and forces follows the original request flow."],
+["combat","done",0,"Skill / Force buffs and debuffs","All 669 skill/force records checked; view-range effects fixed."],
+["combat","done",0,"Class skills on the item belt","Class skills on F1–F10 belt work correctly."],
+["combat","done",0,"Large damage numbers (32-bit)","Combat damage no longer caps at old limits (client + server)."],
+["combat","done",0,"Recovered HP \"+N\" numbers","Green heal numbers show for all heal sources (client + server)."],
+["combat","done",1,"Damage number on killing blow","Grenade/bullet damage now shows even when the hit kills the monster."],
+["combat","done",0,"Battle Mode (peace / combat)","Battle state with logout and item restrictions, swords icon on the gauge."],
+["combat","done",0,"Other players' skills + combat mode sync","Remote player skills display correctly; no more peace/combat desync."],
+["combat","done",0,"Enemy body-block","Players stop when bumping enemies, like retail."],
+["combat","done",0,"Revive desync fixed","Other players no longer look dead after they revive."],
+["combat","done",0,"Player visibility (relog / PvP / stealth)","Players no longer vanish or freeze after relog, PvP or stealth."],
+["combat","done",0,"Smooth remote movement","Fixed stop-go and rollback of other players' movement."],
+["combat","done",0,"No more walking after attack","Character no longer walks on its own after an attack."],
+["combat","done",0,"Fast kill / loot / retarget","No more \"targeting has failed\" spam when attacking quickly."],
+["combat","done",0,"Grenade disconnect fix","Accretia grenade no longer disconnects the player; launcher every-2nd-hit fixed."],
+["combat","done",0,"Grenade Launcher / Rocket / Beam Rifle sounds","Missing weapon sounds restored."],
+["combat","done",0,"Siege kit glow","Siege mode texture glow."],
+["combat","done",0,"Skill particle line fix","Random lines across the screen from skill effects removed."],
+["combat","done",0,"Pit boss skills and buffs","Pit bosses now cast and show their skills (client + server)."],
+["combat","done",0,"Set item effects + tooltips","1,373 set records match Taiwan; duplicate accessory and Halloween set tooltips fixed."],
+["combat","test",0,"Stun (all effects)","All stun sources handled for owner and observers."],
+["combat","test",0,"Critical hit effect + MISS","Critical damage effect and counter/shield-ignore effects."],
+["combat","test",0,"Skill/force error messages","\"Curse resistance\" and other result messages for skills and forces."],
+["combat","test",0,"Incoming buff message","System message when another player buffs you."],
+["combat","test",0,"Effect clean-up","Cast effects no longer linger forever (bots, Flamethrower)."],
+["combat","test",0,"Grenade retarget + cooldown","Stale target cleanup and correct grenade cooldown."],
+["combat","test",0,"Skill animation fallback","Missing skill animations fall back like retail instead of failing."],
+["combat","done",0,"Cloak / jetpack triggers","Cloak and jetpack only open on the right skill results."],
+// ---------- Items ----------
+["items","done",0,"Item grade colours (0–11, Mythic)","Item grade colours and upgrade limits match Taiwan."],
+["items","done",0,"Item Combination","Combination window, effects and result checks."],
+["items","done",0,"NPC store","Class buy rules, repair prices, 100-entry limit, partial stack sell."],
+["items","done",0,"Vending (personal store)","Registered item mark and correct refusal messages."],
+["items","done",0,"Cash Shop","Goods list, filters, sort and categories."],
+["items","done",0,"Item stacking","Fire crackers, radars, recovery and NPC link items stack on purchase."],
+["items","done",0,"Loot and drop rules","Looting / dropping matches retail; rare loot sounds."],
+["items","done",0,"Item fanfare","Firework + race chat \"has acquired\" for rare/upgraded items."],
+["items","done",1,"Magnet Loot","Magnetic Jade pulls nearby stackable drops to you; party round-robin fixed."],
+["items","done",0,"Item Waiting to Send (item queue)","Taiwan queue window for items sent to the player; Receive All, full bag and relog handled (client + server)."],
+["items","done",0,"Race currency 999,999,999,999 + gold 100M","64-bit wallet, bank, trade and store money (client + server + database)."],
+["items","done",0,"Bank max money fix","Bank at maximum no longer causes save errors."],
+["items","done",0,"Weapon swap bug","Weapon no longer swaps back by itself after equipping."],
+["items","done",0,"Potion hotkey","Potion hotkey spam behaviour checked and confirmed correct."],
+["items","done",0,"Snowman transformation","Snowman item visuals and potion tooltip fixed."],
+["items","done",0,"Item names cleaned","8,660 item names without internal codes; broken characters fixed."],
+["items","test",0,"Storage expansion (10 pages)","Bank pages with Bronze / Silver / Gold Storage Keys (client + server + database)."],
+["items","test",0,"64-bit money in all windows","Remaining money displays (MAU, ore, patriarch, etc.) use 64-bit values; client + server deploy together."],
+["items","test",0,"Jade / generator effects","Aux equipment list and inventory have-effects."],
+["items","test",0,"Summon / Teleport / Insuperable potions","Movement block and party event fixes."],
+["items","test",0,"Potion effects safety","Invalid potion effects rejected instead of silently doing nothing."],
+["items","test",0,"Warehouse + shop sell messages","Trunk window clicks and sell error messages (max money)."],
+["items","plan",0,"Item Lock","Taiwan item lock feature; needs new server support (audited)."],
+["items","plan",0,"Item Upgrade window gaps","7 small differences vs Taiwan found in the upgrade window (audited)."],
+["items","plan",1,"Upgrade success-chance panel","Show upgrade chance in the upgrade window (audited, formula matches our server)."],
+["items","plan",1,"Alternative upgrade (Modifier) window skin","New-look upgrade window (sprites audited, waiting for approval)."],
+["items","plan",0,"Box reward contents","Fill empty multi-item boxes and placeholder box names (needs a decision on rewards)."],
+// ---------- Systems ----------
+["systems","done",0,"Party size 12","12-member party, Taiwan party window, EXP sharing (client + server)."],
+["systems","done",0,"Honor Guild","Honor Guild list, notices and mark (client + server)."],
+["systems","done",0,"Patriarch election + tax","Election result window; tax split checked."],
+["systems","done",0,"Holy Stone (crystal) HP window","Who can see the crystal HP during chip war."],
+["systems","done",0,"Race-war result screen","Win/Failure screens render correctly."],
+["systems","done",0,"MAU / unit system","Unit storehouse, tuning, repair price; mount/dismount."],
+["systems","done",0,"Mount system","Ride Mount skill and riding work."],
+["systems","done",0,"Animus","Rank effects by level, summon UI, regen, true level 80 cap."],
+["systems","done",0,"Class promotion","Reward selection, tooltip and 2-promotion limit fixed."],
+["systems","done",0,"Battle dungeon (Darkhole)","Gate, mission window and timer fixes."],
+["systems","done",0,"Post / Mail box","Mail windows, attachments, post events."],
+["systems","done",0,"Bellato HQ spawns","Flem and Wing monster positions restored."],
+["systems","done",0,"Monster spawn / heading guards","Monsters spawn on valid points and face correctly."],
+["systems","done",0,"Guard towers","System guard towers spawn correctly."],
+["systems","done",1,"Sanction tab","Search, drag, vote and release in the sanction window (client + server)."],
+["systems","done",0,"Free ride ship / mine coordinates","Correct coordinates for ships and mine travel."],
+["systems","test",0,"110-map Taiwan layout","Map list and server map folder switched to the Taiwan 110-map layout."],
+["systems","test",0,"Billing + notify messages","Billing countdown and notify messages."],
+["systems","test",0,"Ore processing window","Rebuilt from the original layout with prices and notices."],
+["systems","test",1,"Guardian (keeper) exit at battle start","Keeper leaves when the battle starts."],
+["systems","plan",0,"Contribution (CP) season","Needs verified 455 season rules before building."],
+["systems","plan",0,"Play time limit (fatigue)","Missing penalty messages; server option currently off."],
+["systems","plan",0,"Settlement mining","Unmanned mining drill audited; server rules not yet verified."],
+["systems","plan",0,"Sky ships","Flying ships in the sky (Taiwan does not show them; needs your choice)."],
+// ---------- Server ----------
+["server","done",0,"Network hardening","Fixes for leaked buffers, bad packet sizes and zombie sockets."],
+["server","done",0,"Hidden-target anti-hack","Stealth/invisible players cannot be targeted by hacks."],
+["server","done",0,"Server performance","Faster main loop (10 ms per player removed), timer and save fixes."],
+["server","done",0,"Community patches reviewed and applied","Potion delay, user-count log, force mastery window, repeat quest duplicate, party EXP level limit, path direction."],
+["server","done",0,"Database fixes","Column types and save errors fixed."],
+["server","done",0,"GM command permissions","GM command access levels match retail."],
+["server","test",1,"Movement and attack speed guard","Server checks for speed hacks on movement, attacks and skills."],
+["server","test",1,"Player ground height check","Stops floating / fly-hack positions."],
+["server","test",1,"Area-damage radius checks","Exact AoE geometry and cross-layer guards."],
+["server","test",1,"Action hardening","Stun, loot height, movement-state and tower checks."],
+["server","test",0,"Login / account server fixes","Login retry, lockout and slot-release fixes; faster first login."],
+// ---------- Render ----------
+["render","done",0,"DirectX 9 client","Client moved from DirectX 8 to DirectX 9."],
+["render","done",1,"FlipEx present mode","Optional modern present mode with MSAA and VSync."],
+["render","done",0,"Item glow optimisation","Faster glowing-item rendering (fewer GPU locks)."],
+["render","done",0,"Map / tree rendering","Sharper trees, grass lighting, scattering sky."],
+["render","done",0,"FPS limiter fix","Smoother frame pacing."],
+["render","done",0,"Crash handler","Crash log and dump file for fast bug fixing."],
+["render","test",1,"Item glow on worker threads (64-bit)","Glow building spread over 3 threads."],
+["render","test",0,"Crowd glow crash fix","No crash with more than 256 glowing items on screen."],
+["render","test",0,"Many-effects crash fix","No crash when lots of effects play at once."],
+["render","test",0,"Particle / entity limits","Supports the larger 455 particle tables."],
+["render","test",1,"Fast screenshots","No FPS hitch when taking a screenshot."],
+["render","test",0,"Character rendering optimisation","Fewer draw calls for character skinning."],
+["render","plan",0,"DirectX 11 renderer","Phased plan ready; deferred, DirectX 9 stays default."],
+["render","plan",0,"Internal resolution with UI scaling","Render the 3D world at a different resolution; deferred."],
+// ---------- Tools ----------
+["tools","done",0,"Parser (data compiler)","Builds client and server data tables from spreadsheets; native 455 tables."],
+["tools","done",0,"Model Studio","3D viewer for characters, armour, weapons, textures and animations."],
+["tools","done",0,"Taiwan quest data","2,883 Taiwan quests restored in the Parser."],
+["tools","done",0,"Item descriptions","13,114 item descriptions restored."],
+["tools","done",0,"Load-test bot client","Headless bots (300) to stress-test the server with PvP, walking, chat and mobs."],
+["tools","test",0,"Parser V2 item import","Weapon / armour import with server sync."],
+["tools","test",0,"Character / monster 455 data migration","Phase 1 done; full migration still in progress."],
+["tools","plan",1,"RF Online Studio","Standalone client asset/remodel tool; first viewer slice built."],
+];
+
+const STATUS = {done:["DONE","t-done"], test:["IN TESTING","t-test"], plan:["PLANNED","t-plan"]};
+const state = {status:"all", cat:"all", q:""};
+
+function chip(parent, label, key, val){
+  const b = document.createElement("button");
+  b.className = "chip"; b.type = "button"; b.textContent = label;
+  b.dataset.key = key; b.dataset.val = val;
+  b.setAttribute("aria-pressed", state[key] === val);
+  b.onclick = () => { state[key] = val; parent.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c.dataset.val === val)); render(); };
+  parent.appendChild(b);
+}
+const sf = document.getElementById("statusFilters"), cf = document.getElementById("catFilters");
+[["All","all"],["Done","done"],["In testing","test"],["Planned","plan"],["Custom only","custom"]].forEach(([l,v]) => chip(sf,l,"status",v));
+chip(cf,"All","cat","all"); Object.entries(CATS).forEach(([k,v]) => chip(cf,v,"cat",k));
+document.getElementById("q").oninput = e => { state.q = e.target.value.toLowerCase(); render(); };
+
+const count = s => F.filter(f => f[1] === s).length;
+document.getElementById("stats").innerHTML =
+  `<div class="stat"><b>${F.length}</b><span>Total items</span></div>` +
+  `<div class="stat"><b>${count("done")}</b><span>Done</span></div>` +
+  `<div class="stat"><b>${count("test")}</b><span>In testing</span></div>` +
+  `<div class="stat"><b>${count("plan")}</b><span>Planned</span></div>` +
+  `<div class="stat"><b>${F.filter(f => f[2]).length}</b><span>Custom additions</span></div>`;
+
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function render(){
+  const order = {done:0,test:1,plan:2};
+  const rows = F.filter(f =>
+    (state.status === "all" || (state.status === "custom" ? f[2] : f[1] === state.status)) &&
+    (state.cat === "all" || f[0] === state.cat) &&
+    (!state.q || (f[3] + " " + f[4]).toLowerCase().includes(state.q)));
+  let html = "";
+  for (const [k, name] of Object.entries(CATS)){
+    const g = rows.filter(f => f[0] === k).sort((a,b) => order[a[1]] - order[b[1]]);
+    if (!g.length) continue;
+    html += `<section><h2>${name} <small>${g.length}</small></h2><div class="grid">` +
+      g.map(f => `<div class="item"><div class="tags"><span class="tag ${STATUS[f[1]][1]}">${STATUS[f[1]][0]}</span>${f[2] ? '<span class="tag t-custom">CUSTOM</span>' : ""}</div><h3>${esc(f[3])}</h3><p>${esc(f[4])}</p></div>`).join("") +
+      `</div></section>`;
+  }
+  document.getElementById("list").innerHTML = html || '<p class="empty">No items match.</p>';
+}
+render();
+</script>
+</body>
+</html>
