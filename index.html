@@ -97,7 +97,7 @@ footer{border-top:1px solid var(--line);padding:20px 0 40px;color:var(--dim);fon
     <p class="eyebrow">RF Online · Taiwan 455 base</p>
     <h1>Feature &amp; Fix <span>Roadmap</span></h1>
     <p class="sub">Everything the project already has, and what is built and waiting for its final in-game test.</p>
-    <div class="meta"><span>Last updated <b id="updated">2026-11-26</b></span><span><b id="total"></b> items tracked</span></div>
+    <div class="meta"><span>Last updated <b id="updated">2026-11-27</b></span><span><b id="total"></b> items tracked</span></div>
   </header>
 
   <div class="overview" id="stats"></div>
@@ -258,7 +258,8 @@ const F = [
 ["server","done",0,"Hidden-target anti-hack","Stealth/invisible players cannot be targeted by hacks."],
 ["server","done",0,"Server performance","Faster main loop (10 ms per player removed), timer and save fixes."],
 ["server","done",0,"Community patches reviewed and applied","Potion delay, user-count log, force mastery window, repeat quest duplicate, party EXP level limit, path direction."],
-["server","done",0,"Database fixes","Column types and save errors fixed."],
+["server","done",0,"Database fixes","Column types and save errors fixed; all database patches reviewed against the server and combined into dated scripts."],
+["server","test",0,"Missing database procedures restored","Character data check at login and the personal-shop sale result for sellers who were offline during a sale."],
 ["server","done",0,"GM command permissions","GM command access levels match retail."],
 ["server","test",1,"Movement and attack speed guard","Server checks for speed hacks on movement, attacks and skills."],
 ["server","test",1,"Player ground height check","Stops floating / fly-hack positions."],
@@ -272,6 +273,7 @@ const F = [
 ["render","done",0,"Map / tree rendering","Sharper trees, grass lighting, scattering sky."],
 ["render","done",0,"FPS limiter fix","Smoother frame pacing."],
 ["render","done",0,"Crash handler","Crash log and dump file for fast bug fixing."],
+["render","test",1,"Fast game close","Closing the game no longer freezes the PC for several seconds."],
 ["render","test",1,"Item glow on worker threads (64-bit)","Glow building spread over 3 threads."],
 ["render","test",0,"Crowd glow crash fix","No crash with more than 256 glowing items on screen."],
 ["render","test",0,"Many-effects crash fix","No crash when lots of effects play at once."],
